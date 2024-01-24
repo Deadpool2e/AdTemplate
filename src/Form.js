@@ -133,6 +133,7 @@ const Form = ({ templateData, setTemplateData }) => {
               marginX: "auto",
               fontWeight: "200",
               fontSize: "1rem",
+              color:"grey"
             }}
           >
             Customise your ad and get the templates accordingly
@@ -186,8 +187,8 @@ const Form = ({ templateData, setTemplateData }) => {
                   />
 
                   <Box sx={{ display: "flex", flexDirection: "row" }}>
-                    <AddPhotoAlternateIcon sx={{ color: "black" }} />
-                    <Typography sx={{ color: "gray" }}>
+                    <AddPhotoAlternateIcon sx={{ color: "#5a5858" }} />
+                    <Typography sx={{ color: "#676666" }}>
                       Change the ad creative image.
                     </Typography>
                   </Box>
@@ -200,9 +201,9 @@ const Form = ({ templateData, setTemplateData }) => {
         <Divider sx={{ margin: "20px 0", borderColor: "#ccc" }}>
           <Typography
             variant="caption"
-            sx={{ padding: "0 10px", background: "white" }}
+            sx={{ padding: "0 10px", background: "white",color:"#6a6a6a" }}
           >
-            Edit Content
+            Edit Contents
           </Typography>
         </Divider>
         {/* Edit Content */}

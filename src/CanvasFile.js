@@ -33,39 +33,47 @@ class CanvasEditor {
     const { mask } = this.templateData.urls;
     const { image } = this.templateData.urls;
     if (!image) {
-      const maskImage = new Image();
-      maskImage.src = mask + `?random=${Math.random()}`;
-      this.context.globalCompositeOperation = "source-in";
-      // this.context.fillStyle = "#000000";
-      // this.context.fillRect(x, y, width, height);
-      maskImage.onload = () => {
-        this.context.drawImage(maskImage, x, y, width, height);
-      };
-      this.context.globalCompositeOperation = "source-over";
+      // const maskImage = new Image();
+      // maskImage.src = mask + `?random=${Math.random()}`;
+      // maskImage.onload = () => {
+      //   this.context.drawImage(maskImage, x, y, width, height);
+      // };
+      this.context.fillStyle = "white";
+      this.context.fillRect(x-2, y, width+3, height);
     }
   }
 
   renderMaskStroke() {
     const { x, y, width, height } = this.templateData.image_mask;
-    const { stroke } = this.templateData.urls;
-    const strokeImage = new Image();
-    strokeImage.src = stroke + `?random=${Math.random()}`;
-    strokeImage.onload = () => {
-      this.context.drawImage(strokeImage, x, y, width, height);
-    };
+    // const { stroke } = this.templateData.urls;
+    // const strokeImage = new Image();
+    // strokeImage.src = stroke + `?random=${Math.random()}`;
+    // strokeImage.onload = () => {
+    //   this.context.drawImage(strokeImage, x, y, width, height);
+    // };
+
   }
 
   renderImageIfAvailable() {
     const { image } = this.templateData.urls;
     if (image) {
-      const imageElement = new Image();
-      imageElement.src = image;
-      imageElement.onload = () => {
-        const { x, y, width, height } = this.templateData.image_mask;
-        this.context.drawImage(imageElement, x, y, width, height);
-      };
+        const imageElement = new Image();
+        imageElement.src = image;
+        imageElement.onload = () => {
+            const { x, y, width, height } = this.templateData.image_mask;
+
+            // Draw the white border
+            const borderWidth = 6; // You can adjust the border width as needed
+            this.context.fillStyle = 'white';
+            this.context.clearRect(x - borderWidth, y - borderWidth, width + 2 * borderWidth, height + 2 * borderWidth);
+            this.context.fillRect(x - borderWidth, y - borderWidth, width + 2 * borderWidth, height + 2 * borderWidth);
+
+            // Draw the image on top of the border
+            this.context.drawImage(imageElement, x, y, width, height);
+        };
     }
-  }
+}
+
 
   renderText() {
     const {
