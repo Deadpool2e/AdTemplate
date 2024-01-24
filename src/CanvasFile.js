@@ -28,6 +28,45 @@ class CanvasEditor {
     };
   }
 
+  renderImageMask() {
+    const { x, y, width, height } = this.templateData.image_mask;
+    const { mask } = this.templateData.urls;
+    const { image } = this.templateData.urls;
+    if (!image) {
+      const maskImage = new Image();
+      maskImage.src = mask + `?random=${Math.random()}`;
+      this.context.globalCompositeOperation = "source-in";
+      // this.context.fillStyle = "#000000";
+      // this.context.fillRect(x, y, width, height);
+      maskImage.onload = () => {
+        this.context.drawImage(maskImage, x, y, width, height);
+      };
+      this.context.globalCompositeOperation = "source-over";
+    }
+  }
+
+  renderMaskStroke() {
+    const { x, y, width, height } = this.templateData.image_mask;
+    const { stroke } = this.templateData.urls;
+    const strokeImage = new Image();
+    strokeImage.src = stroke + `?random=${Math.random()}`;
+    strokeImage.onload = () => {
+      this.context.drawImage(strokeImage, x, y, width, height);
+    };
+  }
+
+  renderImageIfAvailable() {
+    const { image } = this.templateData.urls;
+    if (image) {
+      const imageElement = new Image();
+      imageElement.src = image;
+      imageElement.onload = () => {
+        const { x, y, width, height } = this.templateData.image_mask;
+        this.context.drawImage(imageElement, x, y, width, height);
+      };
+    }
+  }
+
   renderText() {
     const {
       text,
@@ -140,7 +179,7 @@ class CanvasEditor {
       }
     });
     
-    let textWidth = Math.min(this.context.measureText(text).width, wrap_length*18);
+    let textWidth = Math.min(this.context.measureText(text).width, wrap_length*15);
     let textHeight = font_size*lineHeight;
     // Draw rounded rectangle as CTA background
     this.context.fillStyle = background_color || "#000000";
@@ -178,53 +217,17 @@ class CanvasEditor {
     }
   }
 
-  renderImageMask() {
-    const { x, y, width, height } = this.templateData.image_mask;
-    const { mask } = this.templateData.urls;
-    const { image } = this.templateData.urls;
-    if (!image) {
-      const maskImage = new Image();
-      maskImage.src = mask + `?random=${Math.random()}`;
-      this.context.globalCompositeOperation = "source-in";
-      // this.context.fillStyle = "#000000";
-      // this.context.fillRect(x, y, width, height);
-      maskImage.onload = () => {
-        this.context.drawImage(maskImage, x, y, width, height);
-      };
-      this.context.globalCompositeOperation = "source-over";
-    }
-  }
+  
 
-  renderMaskStroke() {
-    const { x, y, width, height } = this.templateData.image_mask;
-    const { stroke } = this.templateData.urls;
-    const strokeImage = new Image();
-    strokeImage.src = stroke + `?random=${Math.random()}`;
-    strokeImage.onload = () => {
-      this.context.drawImage(strokeImage, x, y, width, height);
-    };
-  }
-
-  renderImageIfAvailable() {
-    const { image } = this.templateData.urls;
-    if (image) {
-      const imageElement = new Image();
-      imageElement.src = image;
-      imageElement.onload = () => {
-        const { x, y, width, height } = this.templateData.image_mask;
-        this.context.drawImage(imageElement, x, y, width, height);
-      };
-    }
-  }
+  
 
   render() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // ... (rest of the render method)
-    // Make sure to render the background color afterward
+    
+    this.renderBackgroundColor();
     this.renderDesignPattern();
     this.renderImageMask();
     this.renderMaskStroke();
-    this.renderBackgroundColor();
     this.renderImageIfAvailable();
     this.renderText();
     this.renderCTA();
