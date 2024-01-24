@@ -12,7 +12,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { SketchPicker } from "react-color";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 
 const Form = ({ templateData, setTemplateData }) => {
   const [adContent, setAdContent] = useState(templateData.caption.text);
@@ -28,14 +28,15 @@ const Form = ({ templateData, setTemplateData }) => {
     const newColors = colorAlreadyExists
       ? selectedColors.slice(0, 5)
       : [color, ...selectedColors.slice(0, 4)];
+
     setSelectedColors(newColors);
     handleBackgroundChange(color);
     setShowColorPicker(false);
   };
 
   const handleColorItemClick = (color) => {
-    // setSelectedColor(color);
     handleBackgroundChange(color);
+    setSelectedColor(color);
   };
 
   const handlePlusButtonClick = () => {
@@ -47,6 +48,7 @@ const Form = ({ templateData, setTemplateData }) => {
   };
 
   const handleBackgroundChange = (color) => {
+    if (templateData && templateData.urls.background_color === color) return;
     setTemplateData((prevData) => ({
       ...prevData,
       urls: {
@@ -226,9 +228,10 @@ const Form = ({ templateData, setTemplateData }) => {
           />
         </Box>
         {/* Choose Color */}
-
         <Box>
-          <Typography variant="body2" sx={{marginTop:"20px",color:"gray"}}>Choose your color</Typography>
+          <Typography variant="body2" sx={{ marginTop: "20px", color: "gray" }}>
+            Choose your color
+          </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {selectedColors.map((color, index) => (
               <Box
@@ -240,42 +243,45 @@ const Form = ({ templateData, setTemplateData }) => {
                   margin: "5px",
                   cursor: "pointer",
                   borderRadius: "50%",
+                  border: color === selectedColor ? "2px solid white" : "none",
+                  boxShadow:
+                    color === selectedColor ? "0 0 0 1px #0369A1" : "none",
                 }}
                 onClick={() => handleColorItemClick(color)}
               ></Box>
             ))}
-            
+
             <IconButton onClick={handlePlusButtonClick}>
               <AddIcon />
             </IconButton>
-              
           </Box>
 
           {/* Show the color picker dialog */}
           <Dialog open={showColorPicker} onClose={handleCloseColorPicker}>
             <DialogContent>
-              <Box sx={{
-                display: 'flex',
-                flexDirection:"column",
-                alignItems: 'center',
-
-              }}>
-              <SketchPicker
-                color={selectedColor}
-                onChangeComplete={(color) => setSelectedColor(color.hex)}
-              />
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
+              <Box
                 sx={{
-                  marginTop:2,
-                  width:"50%"
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
-                onClick={() => handleColorChange(selectedColor)}
               >
-                Save
-              </Button>
+                <SketchPicker
+                  color={selectedColor}
+                  onChangeComplete={(color) => setSelectedColor(color.hex)}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  sx={{
+                    marginTop: 2,
+                    width: "50%",
+                  }}
+                  onClick={() => handleColorChange(selectedColor)}
+                >
+                  Save
+                </Button>
               </Box>
             </DialogContent>
           </Dialog>

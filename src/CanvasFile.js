@@ -13,7 +13,7 @@ class CanvasEditor {
 
   renderBackgroundColor() {
     const { background_color } = this.templateData.urls;
-    this.context.fillStyle = background_color || "#0369A1"; // Use this.context instead of this.context
+    this.context.fillStyle = background_color || "#0369A1";
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
@@ -120,8 +120,6 @@ class CanvasEditor {
     }
   }
 
-  // Inside the CanvasEditor class
-
   roundRect(x, y, width, height, radius, fill, stroke) {
     this.context.beginPath();
     this.context.moveTo(x + radius, y);
@@ -153,7 +151,7 @@ class CanvasEditor {
       let testLine = `${line}${words[i]} `;
       let metrics = this.context.measureText(testLine);
       let testWidth = metrics.width;
-    
+
       if (testWidth > wrap_length && i > 0) {
         lines.push(line.trim());
         line = `${words[i]} `;
@@ -161,14 +159,13 @@ class CanvasEditor {
         line = testLine;
       }
     }
-    
+
     if (line.trim() !== "") {
       lines.push(line.trim());
     }
 
-
     let currentLine = "";
-    
+
     let lineHeight = 1;
     lines.forEach((line) => {
       if ((currentLine + line).length <= wrap_length) {
@@ -178,13 +175,17 @@ class CanvasEditor {
         currentLine = line + " ";
       }
     });
-    
-    let textWidth = Math.min(this.context.measureText(text).width, wrap_length*15);
-    let textHeight = font_size*lineHeight;
+
+    let textWidth = Math.min(
+      this.context.measureText(text).width,
+      wrap_length * 15
+    );
+    let textHeight = font_size * lineHeight;
+
     // Draw rounded rectangle as CTA background
     this.context.fillStyle = background_color || "#000000";
     this.roundRect(
-      position.x - textWidth / 2 - padding / 2 ,
+      position.x - textWidth / 2 - padding / 2,
       position.y - textHeight / 2 - padding / 2,
       textWidth + padding,
       textHeight + padding,
@@ -199,7 +200,7 @@ class CanvasEditor {
     this.context.textAlign = "center";
     this.context.textBaseline = "middle";
 
-    let y = position.y - (lineHeight - 1) * font_size / 2;
+    let y = position.y - ((lineHeight - 1) * font_size) / 2;
     currentLine = "";
 
     lines.forEach((line) => {
@@ -217,13 +218,10 @@ class CanvasEditor {
     }
   }
 
-  
-
-  
-
   render() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
+
+    // calling all the functions in the order as mentioned
     this.renderBackgroundColor();
     this.renderDesignPattern();
     this.renderImageMask();

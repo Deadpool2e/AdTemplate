@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Canvas from "./CanvasFile";
 import Form from "./Form";
-import { Box, Divider } from "@mui/material";
+import { Box, Divider, Paper } from "@mui/material";
+import Image from "./assessts/img.jpg";
 
 const App = () => {
   const initialTemplateData = {
@@ -56,18 +57,20 @@ const App = () => {
     // flex: '1', // Take remaining space
     maxHeight: "50vh",
     border: "1px solid rgb(59 59 59 / 67%)",
+    boxShadow:
+      "0 4px 6px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
   };
 
   return (
-    <div id="ew" style={{ display: "flex", height: "100vh" }}>
-      <div style={{ flex: "1" }}>
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      <Box sx={{ flex: "1" }}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "100vh",
-            backgroundImage: 'url("./assessts/img.jpg")',
+            backgroundImage: `url(${Image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundColor: "#e0e0e0",
@@ -75,16 +78,16 @@ const App = () => {
         >
           <Canvas templateData={templateData} style={canvasStyle} />
         </Box>
-      </div>
+      </Box>
       <Divider
         orientation="vertical"
         flexItem
         style={{ backgroundColor: "#555" }}
       />
-      <div style={{ flex: "1" }}>
+      <Box sx={{ flex: "1" }}>
         <Form templateData={templateData} setTemplateData={setTemplateData} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
