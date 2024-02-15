@@ -112,20 +112,29 @@ class CanvasEditor {
 
     let y = position.y;
     let currentLine = "";
+    let count = 0;
+    let shouldBreak = false;
 
     lines.forEach((line) => {
-      if ((currentLine + line).length <= max_characters_per_line) {
+      if (!shouldBreak && (currentLine + line).length <= max_characters_per_line) {
         currentLine += line + " ";
       } else {
-        this.context.fillText(currentLine.trim(), position.x, y);
-        y += font_size;
+        if (!shouldBreak) {
+          this.context.fillText(currentLine.trim(), position.x, y);
+          y += font_size;
+          count++;
+          if (count >= 5) {
+            shouldBreak = true; 
+          }
+        }
         currentLine = line + " ";
       }
     });
 
-    if (currentLine.trim() !== "") {
+    if (!shouldBreak) {
       this.context.fillText(currentLine.trim(), position.x, y);
     }
+
   }
 
   roundRect(x, y, width, height, radius, fill, stroke) {
